@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmo Congruencial Aditivo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8c8dc; /* Rosa claro */
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .table {
+            background-color: #f4a6c0; /* Rosa más oscuro */
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <h2 class="text-danger">Algoritmo Congruencial Aditivo (˶˃⤙˂˶)</h2>
+        <div class="mb-3">
+            <input type="text" id="seeds" class="form-control w-50 mx-auto" placeholder="Ingrese las semillas separadas por coma (al menos 2)">
+        </div>
+        <div class="mb-3">
+            <input type="number" id="modulo" class="form-control w-50 mx-auto" placeholder="Ingrese módulo (m)">
+        </div>
+        <div class="mb-3">
+            <input type="number" id="iterations" class="form-control w-50 mx-auto" placeholder="Ingrese número de iteraciones">
+        </div>
+        <button class="btn btn-danger" onclick="generateNumbers()">Generar</button>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Iteración</th>
+                    <th>Xi</th>
+                    <th>(Xi-1 + Xi-2) mod m</th>
+                </tr>
+            </thead>
+            <tbody id="results"></tbody>
+        </table>
+    </div>
+
+    <script>
+        function generateNumbers() {
+            let seedsInput = document.getElementById("seeds").value;
+            let seeds = seedsInput.split(',').map(num => parseInt(num.trim()));
+            let modulo = parseInt(document.getElementById("modulo").value);
+            let iterations = parseInt(document.getElementById("iterations").value);
+            let results = document.getElementById("results");
+            results.innerHTML = "";
+
+            if (seeds.some(isNaN) || seeds.length < 2) {
+                alert("Debe ingresar al menos dos semillas válidas separadas por coma");
+                return;
+            }
+
+            if (isNaN(modulo) || isNaN(iterations) || modulo <= 0 || iterations <= 0) {
+                alert("El módulo y el número de iteraciones deben ser mayores a 0");
+                return;
+            }
+
+            for (let i = 0; i < iterations; i++) {
+                let newSeed = (seeds[seeds.length - 1] + seeds[seeds.length - 2]) % modulo;
+                
+                let row = `<tr><td>${i + 1}</td><td>${seeds[seeds.length - 1]}</td><td>(${seeds[seeds.length - 1]} + ${seeds[seeds.length - 2]}) mod ${modulo} = ${newSeed}</td></tr>`;
+                results.innerHTML += row;
+
+                seeds.push(newSeed);
+            }
+        }
+    </script>
+</body>
+</html>
